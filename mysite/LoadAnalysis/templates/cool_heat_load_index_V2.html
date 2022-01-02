@@ -1,0 +1,182 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'img/favicon.ico' %}">
+    <title>采暖降温负荷</title>
+    <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'bootstrap/css/datepicker.css' %}">
+    <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap-table.min.css' %}">
+    <link rel="stylesheet" href="{% static 'fonts/fontawesome-all.min.css' %}">
+    <link rel="stylesheet" href="{% static 'fonts/iconfont.css' %}"/>
+    <link rel="stylesheet" href="{% static 'css/header_V2.css' %}"/>
+</head>
+<body>
+<header id="navcont">
+    <div id="nav" class="clearfix">
+        <div class="navta"></div>
+        <a class="navleft">
+            <div class="navImage">
+                <img class="imglogo" src="{% static 'img/logo/Beijing.png' %}" alt="">
+                <span>电力负荷大数据分析</span>
+                <i>V1.0.0</i>
+            </div>
+        </a>
+
+        <ul class="navbtn">
+            <li class="freedbackbtn" title="反馈"></li>
+            <li class="helpbtn" title="帮助"></li>
+            <li class="selfbtn" title="产品信息"></li>
+            <li class="postbtn" title="通知"></li>
+            <li class="loginbtn">
+                <span class="loginpic active"></span>
+                <span class="spantext">{{ user }}</span>
+            </li>
+            <a href="{% url 'logout' %}">
+                <li class="closebtn" title="关闭"></li>
+            </a>
+        </ul>
+
+    </div>
+
+    <div class="navborder"></div>
+
+</header>
+<nav class="nav" id="my-navbar">
+    <a class="nav-link my-link" href="{% url 'refine_analysis_index' %}" style="margin-left: 5px">
+        <i class="iconfont icon-jingxihuafenxi"></i>
+        精细化分析
+    </a>
+    <a class="nav-link my-link" href="{% url 'factors_analysis_index' %}">
+        <i class="iconfont icon-yingxiangyinsu"></i>
+        特性分析
+    </a>
+    <a class="nav-link my-link" href="{% url 'predict_index' %}">
+        <i class="iconfont icon-fuhefenxi"></i>
+        变化趋势分析
+    </a>
+    <a class="nav-link my-link" href="{% url 'inner_analysis_index' %}">
+        <i class="iconfont icon-neizaiguilv"></i>
+        内在规律分析
+    </a>
+{#    <a class="nav-link my-link active" href="{% url 'cool_heat_load_index' %}">#}
+{#        <i class="iconfont icon-jiangwencainuan"></i>#}
+{#        降温采暖负荷#}
+{#    </a>#}
+</nav>
+<div class="container-fluid" id="main">
+    <div class="d-flex" id="filter">
+        <div class="form-inline" id="time-filter">
+            <label class="tiaojian" for="datepicker-year">选择年份</label>
+            <div class="c-datepicker-date-editor c-datepicker-single-editor J-yearPicker-single"
+                 style="width: 160px; padding: 0 0 0 10px">
+                <input type="text" autocomplete="off" name="" placeholder=""
+                       class="c-datepicker-data-input" value="" id="datepicker-year"
+                       style="width: 120px">
+                <i class="iconfont icon-calendar"></i>
+            </div>
+        </div>
+        <div class="form-inline" id="district-filter">
+            <label class="tiaojian" for="district-select">电网选择</label>
+            <select class="form-control" id="district-select"></select>
+        </div>
+        <div class="form-inline" style="flex: 1">
+            <button id="analysis-button" class="btn btn-primary">分析</button>
+        </div>
+    </div>
+    <div class="d-flex" id="content" style="height: calc(100vh - 174px)">
+        <div class="tab-content" style="width: 100%; height: 100%">
+            <div class="row" style="height: 50%">
+                <div class="col-6">
+                    <div class="head-top-border"></div>
+                    <div class="my-head-row">
+                        <div class="head-vertical-line d-inline-block"></div>
+                        <div class="my-head d-inline-block">
+                            降温负荷
+                            <i class="fa fa-info-circle my-info-icon" data-toggle="tooltip" data-html="true"
+                               id="info-cool-load-data"></i>
+                        </div>
+                    </div>
+                    <div style="display: flex; flex: 1;border-right: 1px solid #E1E1E0;border-bottom: 1px solid #E1E1E0;border-left: 1px solid #E1E1E0;">
+                        <div class="myEcharts" id="cool-load"
+                             style="flex: 1;border:none"></div>
+                        <div class="my-table-container" style="border: none">
+                            <table id="cool-load-data" class="table table-hover myTables table-striped"
+                                   style="flex: 1;"></table>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="head-top-border"></div>
+                    <div class="my-head-row">
+                        <div class="head-vertical-line d-inline-block"></div>
+                        <div class="my-head d-inline-block">
+                            降温负荷与日负荷特性
+                            <i class="fa fa-info-circle my-info-icon" data-toggle="tooltip" data-html="true"
+                               id="info-cool-load-influence"></i>
+                        </div>
+                    </div>
+                    <div class="my-table-container" style="border-bottom: 1px solid #E1E1E0">
+                        <table id="cool-load-influence" class="table table-hover myTables table-striped"></table>
+                    </div>
+                </div>
+            </div>
+            <div class="row" style="height: 50%">
+                <div class="col-6">
+                    <div class="head-top-border"></div>
+                    <div class="my-head-row">
+                        <div class="head-vertical-line d-inline-block"></div>
+                        <div class="my-head d-inline-block">
+                            采暖负荷
+                            <i class="fa fa-info-circle my-info-icon" data-toggle="tooltip" data-html="true"
+                               id="info-heat-load-data"></i>
+                        </div>
+                    </div>
+                    <div style="display: flex; flex: 1;border-right: 1px solid #E1E1E0;border-bottom: 1px solid #E1E1E0;border-left: 1px solid #E1E1E0;">
+                        <div class="myEcharts" id="heat-load"
+                             style="flex: 1;border:none"></div>
+                        <div class="my-table-container" style="border: none">
+                            <table id="heat-load-data" class="table table-hover myTables table-striped"
+                                   style="flex: 1"></table>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="head-top-border"></div>
+                    <div class="my-head-row">
+                        <div class="head-vertical-line d-inline-block"></div>
+                        <div class="my-head d-inline-block">
+                            采暖负荷与日负荷特性
+                            <i class="fa fa-info-circle my-info-icon" data-toggle="tooltip" data-html="true"
+                               id="info-heat-load-influence"></i>
+                        </div>
+                    </div>
+                    <div class="my-table-container" style="border-bottom: 1px solid #E1E1E0">
+                        <table id="heat-load-influence" class="table table-hover myTables table-striped"></table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="footer">
+    <p>Copyright © <span class="footeryear">2020</span> 国家电网有限公司版权所有 · 中国电科院技术支持</p>
+</div>
+
+<script src={% static 'bootstrap/js/jquery.min.js' %}></script>
+<script src={% static 'bootstrap/js/bootstrap.min.js' %}></script>
+<script src={% static 'bootstrap/js/moment.min.js' %}></script>
+<script src={% static 'bootstrap/js/datepicker.all.min.js' %}></script>
+<script src={% static 'bootstrap/js/datepicker.zh.js' %}></script>
+<script src={% static 'bootstrap/js/echarts.min.js' %}></script>
+<script src={% static 'bootstrap/js/ecStat.js' %}></script>
+<script src={% static 'bootstrap/js/bootstrap-table.min.js' %}></script>
+<script src={% static 'bootstrap/js/bootstrap-table-zh-CN.min.js' %}></script>
+<script src={% static 'bootstrap/js/bootstrap-table-export.min.js' %}></script>
+<script src={% static 'bootstrap/js/tableExport.js' %}></script>
+<script src={% static 'js/cool_heat_load.js' %}></script>
+</body>
+
+</html>

@@ -1,0 +1,51 @@
+{% load static %}
+<!DOCTYPE html>
+<html style="height: 100%;" lang="zh-CN">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>login</title>
+    <link rel="stylesheet" href={% static 'bootstrap/css/bootstrap.min.css' %}>
+    <link rel="stylesheet" href={% static 'fonts/ionicons.min.css' %}>
+    <link rel="stylesheet" href={% static 'css/login.css' %}>
+</head>
+
+<body>
+<div class="container-fluid" style="height: 100vh">
+    <div class="row" style="height: 20%">
+        <div class="col-12 login-clean" style="display: flex; flex-direction: column">
+            <div style="flex: 1"></div>
+            <p class="text-center" id="project-name">电力负荷大数据挖掘分析</p>
+            <div style="flex: 1"></div>
+        </div>
+    </div>
+    <div class="row" style="height: 80%">
+        <div class="col-12 login-clean">
+            <form method="post" action="/login/" id="form-login">
+                {% csrf_token %}
+                <p class="text-center" id="login-name">欢迎登录</p>
+                <div class="illustration">
+                    <i class="icon ion-log-in"></i>
+                </div>
+                {% if msg %}
+                    <div class="warning" id="alert-warning-msg">{{ msg }}</div>
+                {% endif %}
+                <div class="form-group">
+                    {{ login_form.username }}
+                </div>
+                <div class="form-group">
+                    {{ login_form.password }}
+                </div>
+                <div class="form-group">
+                    <button class="btn btn-primary btn-block" type="submit">登录</button>
+                </div>
+                <a class="forgot" href={% url 'register' %}>注册</a></form>
+        </div>
+    </div>
+</div>
+<script src={% static 'bootstrap/js/jquery.min.js' %}></script>
+<script src={% static 'bootstrap/js/bootstrap.min.js' %}></script>
+</body>
+
+</html>

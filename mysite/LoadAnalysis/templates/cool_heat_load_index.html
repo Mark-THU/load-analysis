@@ -1,0 +1,161 @@
+{% load static %}
+<!doctype html>
+<html lang="zh-CN">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- 上述meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href={% static 'bootstrap/css/bootstrap.min.css' %}>
+    <link rel="stylesheet" href={% static 'bootstrap/css/datepicker.css' %}>
+    <link rel="stylesheet" href={% static 'fonts/fontawesome-all.min.css' %}>
+    <link rel="stylesheet" href={% static 'bootstrap/css/bootstrap-table.min.css' %}>
+    <link rel="stylesheet" href={% static 'css/header.css' %}>
+    <link rel="stylesheet" href={% static 'css/cool_heat_load.css' %}>
+    <title>降温采暖负荷</title>
+</head>
+<body>
+{# header #}
+{% include 'header.html' %}
+<hr/>
+<div class="container-fluid">
+    <div class="row flex-xl-nowrap">
+        <!-- sidebar on the left-->
+        <div class="col-2" id="sidebar-left">
+            <form class="d-flex align-items-center">
+                <input type="search" class="form-control" id="search-input" placeholder="搜索..."
+                       aria-label="Search for..." autocomplete="off" spellcheck="false" role="combobox"
+                       aria-autocomplete="list" aria-expanded="false" aria-labelledby="search-input"
+                       aria-owns="algolia-autocomplete-listbox-0" dir="auto"
+                       style="position: relative; vertical-align: top;">
+            </form>
+            <ul class="nav flex-column nav-pills">
+                <li class="nav-item">
+                    <a class="nav-link my-link" href="{% url 'refine_analysis_index' %}">
+                        精细化负荷分析
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link my-link" href="{% url 'factors_analysis_index' %}">
+                        影响因素分析
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link my-link" href="{% url 'predict_index' %}">
+                        负荷预测
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link my-link" href="{% url 'inner_analysis_index' %}">
+                        内在规律分析
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link my-link active" href="{% url 'cool_heat_load_index' %}">
+                        降温采暖负荷
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <!-- main content -->
+        <div class="col" id="main">
+            <div class="row">
+                <div class="my-head-row">
+                    <h3 class="my-head">
+                        降温负荷
+                        <i class="fa fa-info-circle my-info-icon" data-toggle="tooltip" data-html="true"
+                           id="info-cool-load-data"></i>
+                    </h3>
+                    <div class="my-subtext">根据有降温负荷代表日和无降温负荷代表日，获得降温负荷并分析</div>
+                </div>
+                <div class="col-12">
+                    <div class="myEcharts" id="cool-load" style="width: 100%;height: 400px"></div>
+                </div>
+                <div class="col-12 ">
+                    <table id="cool-load-data" class="table table-hover myTables table-striped"
+                           style="width: 100%;height: 200px"></table>
+                </div>
+            </div>
+            <div class="row">
+                <div class="my-head-row">
+                    <h3 class="my-head">
+                        降温负荷与日负荷特性
+                        <i class="fa fa-info-circle my-info-icon" data-toggle="tooltip" data-html="true"
+                           id="info-cool-load-influence"></i>
+                    </h3>
+                    <div class="my-subtext">获取有无降温负荷日负荷特性指标，分析降温负荷对日负荷特性的影响</div>
+                </div>
+                <div class="col-12">
+                    <table id="cool-load-influence" class="table table-hover myTables table-striped"
+                           style="width: 100%;height: 200px"></table>
+                </div>
+            </div>
+            <div class="row">
+                <div class="my-head-row">
+                    <h3 class="my-head">
+                        采暖负荷
+                        <i class="fa fa-info-circle my-info-icon" data-toggle="tooltip" data-html="true"
+                           id="info-heat-load-data"></i>
+                    </h3>
+                    <div class="my-subtext">根据有采暖负荷代表日和无采暖负荷代表日，获得采暖负荷并分析</div>
+                </div>
+                <div class="col-12">
+                    <div class="myEcharts" id="heat-load" style="width: 100%;height: 400px"></div>
+                </div>
+                <div class="col-12">
+                    <table id="heat-load-data" class="table table-hover myTables table-striped"
+                           style="width: 100%;height: 200px"></table>
+                </div>
+            </div>
+            <div class="row">
+                <div class="my-head-row">
+                    <h3 class="my-head">
+                        采暖负荷与日负荷特性
+                        <i class="fa fa-info-circle my-info-icon" data-toggle="tooltip" data-html="true"
+                           id="info-heat-load-influence"></i>
+                    </h3>
+                    <div class="my-subtext">获取有无采暖负荷日负荷特性指标，分析采暖负荷对日负荷特性的影响</div>
+                </div>
+                <div class="col-12">
+                    <table id="heat-load-influence" class="table table-hover myTables table-striped"
+                           style="width: 100%;height: 200px"></table>
+                </div>
+            </div>
+        </div>
+        <!-- choose date and district -->
+        <div class="col-2" id="sidebar-right">
+            <div class="form-group">
+                <label for="datepicker-year">选择年份</label>
+                <div class="c-datepicker-date-editor c-datepicker-single-editor J-yearPicker-single">
+                    <i class="fa fa-calendar" style="margin-right: 10px"></i>
+                    <input type="text" autocomplete="off" name="" placeholder=""
+                           class="c-datepicker-data-input" value="" id="datepicker-year">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="district-select">电网选择</label>
+                <select class="form-control" id="district-select"></select>
+            </div>
+            <div class="form-group text-center" id="analysis">
+                <button id="analysis-button" class="btn btn-primary">分析</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+{# 以下三者的引用顺序是固定的 #}
+<script src={% static 'bootstrap/js/jquery.min.js' %}></script>
+<script src={% static 'bootstrap/js/bootstrap.min.js' %}></script>
+<script src={% static 'bootstrap/js/moment.min.js' %}></script>
+<script src={% static 'bootstrap/js/datepicker.all.min.js' %}></script>
+<script src={% static 'bootstrap/js/datepicker.zh.js' %}></script>
+<script src={% static 'bootstrap/js/echarts.min.js' %}></script>
+<script src={% static 'bootstrap/js/bootstrap-table.min.js' %}></script>
+<script src={% static 'bootstrap/js/bootstrap-table-zh-CN.min.js' %}></script>
+<script src={% static 'bootstrap/js/bootstrap-table-export.min.js' %}></script>
+<script src={% static 'bootstrap/js/tableExport.js' %}></script>
+<script src={% static 'js/cool_heat_load.js' %}></script>
+</body>
+</html>

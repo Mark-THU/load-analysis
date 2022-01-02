@@ -1,0 +1,44 @@
+{% load static %}
+{#<!DOCTYPE html>#}
+{#<html lang="zh-CN">#}
+{##}
+{#<head>#}
+{#    <meta charset="utf-8">#}
+{#    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">#}
+{#    <title>head</title>#}
+{#    <link rel="stylesheet" href={% static 'bootstrap/css/bootstrap.min.css' %}>#}
+{#    <link rel="stylesheet" href={% static 'css/Navigation-Clean.css' %}>#}
+{#    <link rel="stylesheet" href={% static 'css/Z-header.css' %}>#}
+{#</head>#}
+{##}
+{#<body>#}
+<header class="navbar navbar-expand-md">
+
+    <a class="navbar-brand" href="{% url 'index' %}" style="color: #007d7d;">
+        <img class="d-inline-block align-top" src="{% static 'img/Brand.jpg' %}" style="height: 35px;" alt="">
+        电力负荷大数据分析
+    </a>
+    <div class="collapse navbar-collapse" id="navcol-1">
+        <ul class="nav navbar-nav ml-auto nav-pills">
+            <li class="nav-item dropdown">
+                <a class="dropdown-toggle nav-link my-link" data-toggle="dropdown"
+                   aria-expanded="false">
+                    <i class="icon ion-android-person"></i>
+                    {{ user }}
+                </a>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item my-link" href="{% url 'logout' %}">
+                        退出
+                    </a>
+                </div>
+            </li>
+        </ul>
+    </div>
+</header>
+
+{#<script src= {% static 'js/jquery.min.js' %}></script>#}
+{#<script src={% static 'bootstrap/js/bootstrap.min.js' %}></script>#}
+{#<script src={% static 'js/header.js' %}></script>#}
+{#</body>#}
+{##}
+{#</html>#}

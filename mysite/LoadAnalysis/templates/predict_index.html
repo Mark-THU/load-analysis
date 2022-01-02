@@ -1,0 +1,133 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <link rel="stylesheet" href={% static 'bootstrap/css/bootstrap.min.css' %}>
+    <link rel="stylesheet" href={% static 'bootstrap/css/datepicker.css' %}>
+    <link rel="stylesheet" href={% static 'fonts/fontawesome-all.min.css' %}>
+    <link rel="stylesheet" href={% static 'bootstrap/css/bootstrap-table.min.css' %}>
+    <link rel="stylesheet" href={% static 'css/header.css' %}>
+    <link rel="stylesheet" href={% static 'css/predict.css' %}>
+    <title> 负荷预测 </title>
+</head>
+<body>
+{# header #}
+{% include 'header.html' %}
+<hr/>
+<div class="container-fluid">
+    <div class="row flex-xl-nowrap">
+        <!-- sidebar on the left-->
+        <div class="col-2" id="sidebar-left">
+            <form class="d-flex align-items-center">
+                <input type="search" class="form-control" id="search-input" placeholder="搜索..."
+                       aria-label="Search for..." autocomplete="off" spellcheck="false" role="combobox"
+                       aria-autocomplete="list" aria-expanded="false" aria-labelledby="search-input"
+                       aria-owns="algolia-autocomplete-listbox-0" dir="auto"
+                       style="position: relative; vertical-align: top;">
+            </form>
+            <ul class="nav flex-column nav-pills">
+                <li class="nav-item">
+                    <a class="nav-link my-link" href="{% url 'refine_analysis_index' %}">
+                        精细化负荷分析
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link my-link" href="{% url 'factors_analysis_index' %}">
+                        影响因素分析
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link my-link active" href="{% url 'predict_index' %}">
+                        负荷预测
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link my-link" href="{% url 'inner_analysis_index' %}">
+                        内在规律分析
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link my-link" href="{% url 'cool_heat_load_index' %}">
+                        降温采暖负荷
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <!-- main content -->
+        <div class="col" id="main">
+            <div class="row">
+                <div class="my-head-row">
+                    <h3 class="my-head">
+                        负荷预测模型准确性比较
+                        <i class="fa fa-info-circle my-info-icon" data-toggle="tooltip" data-html="true"
+                           id="info-table-metric"></i>
+                    </h3>
+                    <div class="my-subtext">
+                        衡量各个模型的表现
+                    </div>
+                </div>
+                <div class="col-12">
+                    <table id="table-metric" class="table table-hover myTables table-striped"
+                           style="width: 100%;height: 300px"></table>
+                </div>
+            </div>
+            <div class="row">
+                <div class="my-head-row">
+                    <h3 class="my-head">
+                        作图比较
+                        <i class="fa fa-info-circle my-info-icon" data-toggle="tooltip" data-html="true"
+                           id="info-pred-true-comp"></i>
+                    </h3>
+                    <div class="my-subtext">作图比较预测值和真实值，观察误差</div>
+                </div>
+                <div class="col-12">
+                    <div id="pred-true-comp" style="width: 100%; height: 600px" class="myEcharts"></div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="my-head-row">
+                    <h3 class="my-head">具体数据</h3>
+                    <div class="my-subtext">展示具体数据，并导出</div>
+                </div>
+                <div class="col-12">
+                    <table id="table-data" class="table table-hover myTables table-striped"
+                           style="width: 100%;height: 600px"></table>
+                </div>
+            </div>
+        </div>
+        <!-- choose date and district -->
+        <div class="col-2" id="sidebar-right">
+            <div class="form-group">
+                <label for="datepicker-year">选择月份</label>
+                <div class="c-datepicker-date-editor c-datepicker-single-editor J-yearMonthPicker-single">
+                    <i class="fa fa-calendar" style="margin-right: 10px"></i>
+                    <input type="text" autocomplete="off" name="" placeholder=""
+                           class="c-datepicker-data-input" value="" id="datepicker-year">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="district-select">电网选择</label>
+                <select class="form-control" id="district-select"></select>
+            </div>
+            <div class="form-group text-center" id="analysis">
+                <button id="analysis-button" class="btn btn-primary">分析</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script src={% static 'bootstrap/js/jquery.min.js' %}></script>
+<script src={% static 'bootstrap/js/bootstrap.min.js' %}></script>
+<script src={% static 'bootstrap/js/moment.min.js' %}></script>
+<script src={% static 'bootstrap/js/datepicker.all.min.js' %}></script>
+<script src={% static 'bootstrap/js/datepicker.zh.js' %}></script>
+<script src={% static 'bootstrap/js/echarts.min.js' %}></script>
+<script src={% static 'bootstrap/js/bootstrap-table.min.js' %}></script>
+<script src={% static 'bootstrap/js/bootstrap-table-zh-CN.min.js' %}></script>
+<script src={% static 'bootstrap/js/bootstrap-table-export.min.js' %}></script>
+<script src={% static 'bootstrap/js/tableExport.js' %}></script>
+<script src={% static 'js/predict.js' %}></script>
+</body>
+</html>

@@ -1,0 +1,106 @@
+body {
+    height: 100%;
+    margin: auto;
+    font-family: "Microsoft Yahei", Arial, serif;
+}
+
+p#project-name {
+    font-size: 40px;
+    font-weight: bold;
+    color: #00968D;
+}
+
+p#login-name, p#register-name {
+    font-size: 30px;
+    font-weight: bold;
+}
+
+.illustration i {
+    color: #3BB5A0;
+    font-size: 150px;
+}
+
+form#form-login, form#form-register {
+    width: 30%;
+    height: 100%;
+}
+
+button.btn.btn-primary.btn-block {
+    background: #00968D;
+}
+
+button.btn.btn-primary.btn-block:hover {
+    background: #505e6c;
+}
+
+.warning#alert-warning-msg {
+    color: #FF3333;
+    background-color: #FFEAEA;
+    font-size: 12px;
+    text-align: center;
+    margin-bottom: 5px;
+    border: 1px solid #FF9999;
+}
+
+/*login-form-clean*/
+.login-clean {
+    background: #f1f7fc;
+}
+
+.login-clean form {
+    width: 90%;
+    margin: 0 auto;
+    background-color: #ffffff;
+    padding: 40px;
+    border-radius: 4px;
+    color: #505e6c;
+    box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1);
+}
+
+.login-clean .illustration {
+    text-align: center;
+    padding: 0 0 20px;
+    font-size: 100px;
+}
+
+.login-clean form .form-control {
+    background: #f7f9fc;
+    border: none;
+    border-bottom: 1px solid #dfe7f1;
+    border-radius: 0;
+    box-shadow: none;
+    outline: none;
+    color: inherit;
+    text-indent: 8px;
+    height: 42px;
+}
+
+.login-clean form .btn-primary {
+    background: #f4476b;
+    border: none;
+    border-radius: 4px;
+    padding: 11px;
+    box-shadow: none;
+    margin-top: 26px;
+    text-shadow: none;
+    outline: none !important;
+}
+
+.login-clean form .btn-primary:active {
+    transform: translateY(1px);
+}
+
+.login-clean form .forgot {
+    display: block;
+    text-align: center;
+    font-size: 12px;
+    color: #6f7a85;
+    opacity: 0.9;
+    text-decoration: none;
+}
+
+.login-clean form .forgot:hover, .login-clean form .forgot:active {
+    opacity: 1;
+    text-decoration: none;
+}
+

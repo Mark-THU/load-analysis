@@ -1,0 +1,69 @@
+body {
+    margin: auto;
+    font-family: "Microsoft Yahei", Arial, serif;
+    font-size: 14px;
+}
+
+.tooltip-inner {
+    text-align: left !important; /*字体左对齐*/
+    width: 400px;
+    max-width: 600px !important;
+}
+
+hr {
+    margin-top: 0;
+    margin-bottom: 0;
+    border-top: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+/*sidebar-left css*/
+#sidebar-left form.d-flex.align-items-center {
+    position: relative;
+    padding: 15px;
+    margin-left: -15px;
+    margin-right: -15px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+#sidebar-left .nav-item {
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+/*main css*/
+#main.col {
+    border-left: 1px solid rgba(0, 0, 0, 0.1);
+    border-right: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+#main h3 {
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+#main .my-head-row {
+    background-color: #007d7b;
+    color: #60c888;
+    width: 100%;
+}
+
+/*#main .myTables {*/
+/*    table-layout: fixed;*/
+/*    word-wrap: break-word;*/
+/*    word-break: break-all;*/
+/*    font-size: 10px;*/
+/*}*/
+
+/*sidebar-right css*/
+#sidebar-right .form-group {
+    padding: 15px;
+    margin: 0 -15px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.btn.btn-primary {
+    background: #007d7b;
+}
+
+button#analysis-button {
+    width: 100px;
+}

@@ -1,0 +1,306 @@
+{% load static %}
+<!doctype html>
+<html lang="zh-CN">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- 上述meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href={% static 'bootstrap/css/bootstrap.min.css' %}>
+    <link rel="stylesheet" href={% static 'bootstrap/css/datepicker.css' %}>
+    <link rel="stylesheet" href={% static 'fonts/fontawesome-all.min.css' %}>
+    <link rel="stylesheet" href={% static 'bootstrap/css/bootstrap-table.min.css' %}>
+    <link rel="stylesheet" href={% static 'css/header.css' %}>
+    <link rel="stylesheet" href={% static 'css/refine_analysis.css' %}>
+    <title>精细化负荷分析</title>
+</head>
+<body>
+{# header #}
+{% include 'header.html' %}
+<hr/>
+<div class="container-fluid">
+    <div class="row flex-xl-nowrap">
+        <!-- sidebar on the left-->
+        <div class="col-2" id="sidebar-left">
+            <form class="d-flex align-items-center">
+                <input type="search" class="form-control" id="search-input" placeholder="搜索..."
+                       aria-label="Search for..." autocomplete="off" spellcheck="false" role="combobox"
+                       aria-autocomplete="list" aria-expanded="false" aria-labelledby="search-input"
+                       aria-owns="algolia-autocomplete-listbox-0" dir="auto"
+                       style="position: relative; vertical-align: top;">
+            </form>
+            <ul class="nav flex-column nav-pills">
+                <li class="nav-item">
+                    <a class="nav-link my-link active" href="{% url 'refine_analysis_index' %}">
+                        精细化负荷分析
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link my-link" href="{% url 'factors_analysis_index' %}">
+                        影响因素分析
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link my-link" href="{% url 'predict_index' %}">
+                        负荷预测
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link my-link" href="{% url 'inner_analysis_index' %}">
+                        内在规律分析
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link my-link" href="{% url 'cool_heat_load_index' %}">
+                        降温采暖负荷
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <!-- main content -->
+        <div class="col" id="main">
+            <div class="row">
+                <ul class="nav nav-tabs" role="tablist">
+                    <li class="nav-item" role="presentation" id="item-day">
+                        <a class="nav-link active" role="tab" data-toggle="tab" href="#tab-1" id="a-day-link">
+                            日负荷
+                        </a>
+                    </li>
+                    <li class="nav-item" role="presentation" id="item-week">
+                        <a class="nav-link" role="tab" data-toggle="tab" href="#tab-2" id="a-week-link">
+                            周负荷
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="row">
+                <div class="tab-content" style="width: 100%">
+                    <div class="tab-pane active" role="tabpanel" id="tab-1">
+                        <div class="my-head-row">
+                            <h3 class="my-head">
+                                各类型负荷平均曲线
+                                <i class="fa fa-info-circle my-info-icon" data-toggle="tooltip" data-html="true"
+                                   id="info-day-average-norm-line"></i>
+                            </h3>
+                            <div class="my-subtext">根据日聚类结果，绘制各典型类归一化后平均曲线</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-1"></div>
+                            <div class="col-10">
+                                <div class="myEcharts" id="day-average-norm-line"
+                                     style="width: 100%;height:600px;"></div>
+                            </div>
+                            <div class="col-1"></div>
+                        </div>
+                        <div class="my-head-row">
+                            <h3 class="my-head">类型选择</h3>
+                            <div class="my-subtext">选择某一典型类，对其进行精细化分析</div>
+                        </div>
+                        <div class="row">
+                            <div class="col"></div>
+                            <div class="col-4">
+                                <select class="form-control" id="day-type-select">
+                                </select>
+                            </div>
+                            <div class="col"></div>
+                        </div>
+                        <div class="my-head-row">
+                            <h3 class="my-head">精细化分析</h3>
+                            <div class="my-subtext">针对某一典型负荷的精细化分析结果</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6">
+                                <h4 class="my-head">
+                                    典型日负荷曲线
+                                    <i class="fa fa-info-circle my-info-icon" data-toggle="tooltip" data-html="true"
+                                       id="info-day-average-line"></i>
+                                </h4>
+                                <div class="my-subtext">绘制典型负荷平均负荷曲线</div>
+                                <div class="myEcharts" id="day-average-line" style="width: 100%;height: 400px"></div>
+                            </div>
+                            <div class="col-6" id="day-chara-col">
+                                <h4 class="my-head">
+                                    典型日负荷特性指标
+                                    <i class="fa fa-info-circle my-info-icon" data-toggle="tooltip" data-html="true"
+                                       id="info-table-day-chara"></i>
+                                </h4>
+                                <div class="my-subtext">根据平均负荷曲线计算得到的负荷特性指标</div>
+                                <table id="table-day-chara" class="table table-hover myTables table-striped"
+                                       data-height="400"></table>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6">
+                                <h4 class="my-head">
+                                    Pearson相关性
+                                    <i class="fa fa-info-circle my-info-icon" data-toggle="tooltip" data-html="true"
+                                       id="info-day-corr-pearson"></i>
+                                </h4>
+                                <div class="my-subtext">根据此类型负荷中所有日的负荷特性指标，计算特性指标之间的Pearson相关性</div>
+                                <div class="myEcharts" id="day-corr-pearson" style="width: 100%;height: 400px"></div>
+                            </div>
+                            <div class="col-6">
+                                <h4 class="my-head">
+                                    Spearman相关性
+                                    <i class="fa fa-info-circle my-info-icon" data-toggle="tooltip" data-html="true"
+                                       id="info-day-corr-spearman"></i>
+                                </h4>
+                                <div class="my-subtext">根据此类型负荷中所有日的负荷特性指标，计算特性指标之间的Spearman相关性</div>
+                                <div class="myEcharts" id="day-corr-spearman" style="width: 100%;height: 400px"></div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6">
+                                <h4 class="my-head">
+                                    灰色关联系数
+                                    <i class="fa fa-info-circle my-info-icon" data-toggle="tooltip" data-html="true"
+                                       id="info-day-corr-gra"></i>
+                                </h4>
+                                <div class="my-subtext">根据此类型负荷中所有日的负荷特性指标，计算特性指标之间的灰色关联系数</div>
+                                <div class="myEcharts" id="day-corr-gra" style="width: 100%;height: 400px"></div>
+                            </div>
+                            <div class="col-6">
+                                <h4 class="my-head">
+                                    因果关系
+                                    <i class="fa fa-info-circle my-info-icon" data-toggle="tooltip" data-html="true"
+                                       id="info-day-cause"></i>
+                                </h4>
+                                <div class="my-subtext">选择相关性较高的日负荷特性指标，使用格兰杰方法判断他们之间是否具有因果关系</div>
+                                <div class="myEcharts" id="day-cause" style="width: 100%;height: 400px"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" role="tabpanel" id="tab-2">
+                        <div class="my-head-row">
+                            <h3 class="my-head">
+                                各类型负荷平均曲线
+                                <i class="fa fa-info-circle my-info-icon" data-toggle="tooltip" data-html="true"
+                                   id="info-week-average-norm-line"></i>
+                            </h3>
+                            <div class="my-subtext">根据周聚类结果，绘制各典型类归一化后平均曲线</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-1"></div>
+
+                            <div class="col-10">
+                                <div class="myEcharts" id="week-average-norm-line"
+                                     style="width: 100%;height:600px;"></div>
+                            </div>
+                            <div class="col-1"></div>
+                        </div>
+                        <div class="my-head-row">
+                            <h3 class="my-head">类型选择</h3>
+                            <div class="my-subtext">选择某一典型类，对其进行精细化分析</div>
+                        </div>
+                        <div class="row">
+                            <div class="col"></div>
+                            <div class="col-4">
+                                <select class="form-control" id="week-type-select">
+                                </select>
+                            </div>
+                            <div class="col"></div>
+                        </div>
+                        <div class="my-head-row">
+                            <h3 class="my-head">精细化分析</h3>
+                            <div class="my-subtext">针对某一典型负荷的精细化分析结果</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6">
+                                <h4 class="my-head">
+                                    典型周负荷曲线
+                                    <i class="fa fa-info-circle my-info-icon" data-toggle="tooltip" data-html="true"
+                                       id="info-week-average-line"></i>
+                                </h4>
+                                <div class="my-subtext">绘制典型周负荷平均负荷曲线</div>
+                                <div class="myEcharts" id="week-average-line" style="width: 100%;height: 400px"></div>
+                            </div>
+                            <div class="col-6" id="week-chara-col">
+                                <h4 class="my-head">
+                                    典型周负荷特性指标
+                                    <i class="fa fa-info-circle my-info-icon" data-toggle="tooltip" data-html="true"
+                                       id="info-table-week-chara"></i>
+                                </h4>
+                                <div class="my-subtext">根据典型周负荷平均负荷曲线计算得到特性指标</div>
+                                <table id="table-week-chara" class="table table-hover myTables table-striped"
+                                       data-height="400"></table>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6">
+                                <h4 class="my-head">
+                                    Pearson相关性
+                                    <i class="fa fa-info-circle my-info-icon" data-toggle="tooltip" data-html="true"
+                                       id="info-week-corr-pearson"></i>
+                                </h4>
+                                <div class="my-subtext">根据此类型负荷中所有周的负荷特性指标，计算特性指标之间的Pearson相关性</div>
+                                <div class="myEcharts" id="week-corr-pearson" style="width: 100%;height: 400px"></div>
+                            </div>
+                            <div class="col-6">
+                                <h4 class="my-head">
+                                    Spearman相关性
+                                    <i class="fa fa-info-circle my-info-icon" data-toggle="tooltip" data-html="true"
+                                       id="info-week-corr-spearman"></i>
+                                </h4>
+                                <div class="my-subtext">根据此类型负荷中所有周的负荷特性指标，计算特性指标之间的Spearman相关性</div>
+                                <div class="myEcharts" id="week-corr-spearman" style="width: 100%;height: 400px"></div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6">
+                                <h4 class="my-head">
+                                    灰色关联系数
+                                    <i class="fa fa-info-circle my-info-icon" data-toggle="tooltip" data-html="true"
+                                       id="info-week-corr-gra"></i>
+                                </h4>
+                                <div class="my-subtext">根据此类型负荷中所有周的负荷特性指标，计算特性指标之间的灰色关联系数</div>
+                                <div class="myEcharts" id="week-corr-gra" style="width: 100%;height: 400px"></div>
+                            </div>
+                            <div class="col-6">
+                                <h4 class="my-head">
+                                    因果关系
+                                    <i class="fa fa-info-circle my-info-icon" data-toggle="tooltip" data-html="true"
+                                       id="info-week-cause"></i>
+                                </h4>
+                                <div class="my-subtext">选择相关性较高的周负荷特性指标，使用格兰杰方法判断他们之间是否具有因果关系</div>
+                                <div class="myEcharts" id="week-cause" style="width: 100%;height: 400px"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- choose date and district -->
+        <div class="col-2" id="sidebar-right">
+            <div class="form-group">
+                <label for="datepicker-year">选择年份</label>
+                <div class="c-datepicker-date-editor c-datepicker-single-editor J-yearPicker-single">
+                    <i class="fa fa-calendar" style="margin-right: 10px"></i>
+                    <input type="text" autocomplete="off" name="" placeholder=""
+                           class="c-datepicker-data-input" value="" id="datepicker-year">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="district-select">电网选择</label>
+                <select class="form-control" id="district-select"></select>
+            </div>
+            <div class="form-group text-center" id="analysis">
+                <button id="analysis-button" class="btn btn-primary">分析</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+{# 以下三者的引用顺序是固定的 #}
+<script src={% static 'bootstrap/js/jquery.min.js' %}></script>
+<script src={% static 'bootstrap/js/bootstrap.min.js' %}></script>
+<script src={% static 'bootstrap/js/moment.min.js' %}></script>
+<script src={% static 'bootstrap/js/datepicker.all.min.js' %}></script>
+<script src={% static 'bootstrap/js/datepicker.zh.js' %}></script>
+<script src={% static 'bootstrap/js/echarts.min.js' %}></script>
+<script src={% static 'bootstrap/js/bootstrap-table.min.js' %}></script>
+<script src={% static 'bootstrap/js/bootstrap-table-zh-CN.min.js' %}></script>
+<script src={% static 'js/refine_analysis.js' %}></script>
+</body>
+</html>

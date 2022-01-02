@@ -1,0 +1,20 @@
+$.fn.datePicker.dates['zh'] = {
+  days: ["周日", '周一', '周二', '周三', '周四', '周五', '周六'],
+  months: ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"],
+  now: "现在",
+  clear: '清除',
+  headerYearLink:'',
+  units: ['-', ''],
+  button: ["确认", "取消"],
+  confirm: '确认',
+  cancel: '取消',
+  chooseDay: '选择一天',
+  chooseTime: '选择时间',
+  begin: '开始时间',
+  end: '结束时间',
+  prevYear: '上一年',
+  prevMonth: '上一月',
+  nextYear: '下一年',
+  nextMonth: '下一月',
+  zero: '0:00'
+};
