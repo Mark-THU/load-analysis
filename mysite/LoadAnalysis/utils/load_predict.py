@@ -61,7 +61,7 @@ def load_predict(district_id, time):
     load_true = test_data[['load']].values
 
     # 判断是否已经有FNN模型
-    prefix = './LoadAnalysis/utils/models/'
+    prefix = './mysite/LoadAnalysis/utils/models/'
     # prefix = './models/'
     # model_fnn_dir = './LoadAnalysis/utils/models/fnn_' + district_id + '.pkl'
     model_fnn_dir = prefix + 'fnn_' + district_id + '.pkl'
@@ -116,8 +116,10 @@ def load_predict(district_id, time):
     try:
         model_svr = joblib.load(model_svr_dir)
     except:
+        print('train a svr model')
         model_svr = train_svr(trainX, trainY.squeeze())
         joblib.dump(model_svr, model_svr_dir, compress=3)
+        print('finish training a svr model')
 
     #  模型预测
     y_pred_svr = model_svr.predict(testX)

@@ -1,5 +1,5 @@
 const modelNames = ['FNN', 'SVR', 'XGBoost'];
-const modelNamesTrue = ['FNN', 'Seq2Seq', 'Transformer']
+const modelNamesTrue = ['FNN', 'SVR', 'XGBoost']
 const metrics = ['RMSE', 'MAE', 'R2', 'ACC'];
 var metric_data;
 var predict_data;
@@ -48,8 +48,8 @@ $(document).ready(function () {
                         predict_data.push({
                             'time': all_data['true_data'].datetime[i],
                             'FNN': all_data['FNN'].pred[i].toFixed(1),
-                            'Seq2Seq': all_data['SVR'].pred[i].toFixed(1),
-                            'Transformer': all_data['XGBoost'].pred[i].toFixed(1),
+                            'SVR': all_data['SVR'].pred[i].toFixed(1),
+                            'XGBoost': all_data['XGBoost'].pred[i].toFixed(1),
                             'TRUE': all_data['true_data'].true[i].toFixed(1),
                         })
                     }
@@ -181,7 +181,7 @@ function drawPredTrueComp() {
             trigger: 'axis'
         },
         legend: {
-            data: ["FNN", "Seq2Seq", "Transformer", "TRUE"],
+            data: ["FNN", "SVR", "XGBoost", "TRUE"],
             orient: 'horizontal',
             left: 'center',
         },
@@ -245,14 +245,14 @@ function drawPredTrueComp() {
                 type: 'line',
                 data: all_data['SVR']['pred'].map(value => value.toFixed(2)),
                 // areaStyle: {},
-                name: 'Seq2Seq',
+                name: 'SVR',
                 animation: false,
             },
             {
                 type: 'line',
                 data: all_data['XGBoost']['pred'].map(value => value.toFixed(2)),
                 // areaStyle: {},
-                name: 'Transformer',
+                name: 'XGBoost',
                 animation: false,
             },
             {
@@ -326,12 +326,12 @@ function drawDataTable() {
                 title: 'FNN预测值',
             },
             {
-                field: 'Seq2Seq',
-                title: 'Seq2Seq预测值',
+                field: 'SVR',
+                title: 'SVR预测值',
             },
             {
-                field: 'Transformer',
-                title: 'Transformer预测值',
+                field: 'XGBoost',
+                title: 'XGBoost预测值',
             },
             {
                 field: 'TRUE',
@@ -347,7 +347,7 @@ function loadMetricTable(data) {
     table.bootstrapTable('load', data);
     data.sort((x, y) => x.RMSE - y.RMSE )
     // 提示信息
-    let info = "<p>" + "分别使用了前馈神经网络(FNN)、序列到序列(Seq2Seq)和Transformer三种模型进行负荷预测。<br/>"
+    let info = "<p>" + "分别使用了前馈神经网络(FNN)、支持向量回归(SVR)和XGBoost三种模型进行负荷预测。<br/>"
         + "下表是从均方根误差(RMSE)、平均值误差(MAE)、决定系数(R2)和准确率(ACC)四个方面衡量各模型表现。<br/>"
         + "各指标计算公式如下:<br/>"
         + "RMSE: " + "<img src='../static/img/RMSE.gif'><br/>"
